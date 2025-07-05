@@ -5,9 +5,15 @@
         <title></title>
     </head>
     <body>
-        
+        <div class="button-container">
+            <button id = '1' type="submit" name="Button1">button 1</button>
+            <button>Button 2</button>
+            <button>Button 3</button>
+          </div>
     </body>
     <script type="text/javascript">
-        alert(sessionStorage.getItem('username'))
+        if(sessionStorage.getItem('role')==="student"){
+            document.getElementById('1').style.display = 'none'
+        }
     </script>
 </html>
