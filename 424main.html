@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    <!-- <link rel = "stylesheet" href = "name.css"> use this to link to an external style sheet if we want-->
     <meta charset="utf-8">
     <title></title>
   </head>
@@ -12,14 +13,49 @@
           <input type="text" name="Username" required>
         </div>
         <div class="input-box">
-          <input type="text" name="Password" required>
+          <input type="password" name="Password" required>
         </div>
-        <button type="button" name="button">Login</button>
+        <button type="submit" name="button">Login</button>
       </form>
     </div>
     <script type="text/javascript">
-      document.getElementById('loginForm').addEventListener('button',function(e){
-        
+      
+      //usernames and passwords, would move out to a csv file or database if time allows
+      const users = {
+        "admin": {password: "admin",role:"admin"},
+        "instructor": {password: "instructor",role:"instructor"},
+        "student": {password:"student",role:"student"}
+      }
+
+      const accesslist = {
+        "admin": {
+          "dashboard":["read","write","delete"],
+          "grades":["read","write","delete"]
+        },
+        "instructor":{
+          "dashboard":["read","write"],
+          "grades":["read","write"]
+        },
+        "student":{
+          "dashboard":["read"],
+          "grades":["read"]
+        }
+      }
+
+      document.getElementById('loginForm').addEventListener('submit',function(e){
+        e.preventDefault();
+
+        const username = this.elements.Username.value;
+        const password = this.elements.Password.value;
+
+        if(users[username] && users[username].password === password){
+          sessionStorage.setItem('username',username)
+          sessionStorage.setItem('role',users[username].role)
+
+          window.location.href = "dashboard.html"
+        } else {
+          alert("Wrong username/password")
+        }
       })
     </script>
   </body>
