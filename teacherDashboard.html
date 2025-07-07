@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-    <head>
-        <link rel = "stylesheet" href = "styling.css">
-        <meta charset="utf-8">
-        <title></title>
-    </head>
-    <body>
-        <div class="tableWrapper">
+
+<head>
+    <link rel="stylesheet" href="styling.css">
+    <meta charset="utf-8">
+    <title></title>
+</head>
+
+<body>
+    <div class="tableWrapper">
         <div>
-            <button id="logout">logout</button>
+            <button id="logout" name="button">logout</button>
         </div>
-          <table id="courseTable">
+        <table id="courseTable">
             <thead>
                 <tr>
                     <th>Course Name</th>
@@ -22,59 +24,108 @@
                 <!-- Generate Table from lists -->
             </tbody>
         </table>
-        </div>
-    </body>
-    <script type="text/javascript">
-        //replace with csv or sql handling if time available
-        const username = sessionStorage.getItem('username');
-        const role = sessionStorage.getItem('role');
-        const accessList = JSON.parse(sessionStorage.getItem('accessList'));
+    </div>
+</body>
+<script type="text/javascript">
+    //replace with csv or sql handling if time available
+    const username = sessionStorage.getItem('username');
+    const role = sessionStorage.getItem('role');
+    const accessList = JSON.parse(sessionStorage.getItem('accessList'));
 
-        const courses = JSON.parse(sessionStorage.getItem('courseList'));
-        
-        document.getElementById('logout').addEventListener('click',function(e){
-            sessionStorage.removeItem('username');
-            sessionStorage.removeItem('role');
-            window.location.href = "424main.html"
-        })
-        //fill table from lists
-        function fillCourseTable(){
-            const tableBody = document.getElementById('courseTableBody');
-            tableBody.innerHTML = '';
+    const courses = JSON.parse(sessionStorage.getItem('courseList'));
 
-            for (const [courseName,courseData] of Object.entries(courses)){
-                if (courseData.instructorName === username){
-                    for(const [studentName,studentData] of Object.entries(courseData.students)){
-                        const row = document.createElement('tr');
+    document.getElementById('logout').addEventListener('click', function (e) {
+        sessionStorage.removeItem('username');
+        sessionStorage.removeItem('role');
+        window.location.href = "424main.html"
+    })
 
-                        const cell1 = document.createElement('td');
-                        cell1.textContent = courseName;
-                        row.appendChild(cell1);
+    //fill table from lists
+    function fillCourseTable() {
+        const tableBody = document.getElementById('courseTableBody');
+        tableBody.innerHTML = '';
 
-                        const cell2 = document.createElement('td');
-                        cell2.textContent = studentName;
-                        row.appendChild(cell2);
-                        const cell3 = document.createElement('td');
-                        cell3.addEventListener("click", function () {
-                            const newGrade = prompt("Enter new grade:", this.textContent);
-                            if (newGrade !== null) {
-                                this.textContent = newGrade; // Update cell content
-                            }
-                            courses[courseName].students[studentName].grade = newGrade;
-                            sessionStorage.setItem('courseList', JSON.stringify(courses));
-                            });
-                        cell3.textContent = studentData.grade;
-                        row.appendChild(cell3);
+        for (const [courseName, courseData] of Object.entries(courses)) {
+            if (role === 'admin') {
+                for (const [studentName, studentData] of Object.entries(courseData.students)) {
+                    const row = document.createElement('tr');
 
-                        tableBody.appendChild(row);
-                    }
+                    const cell1 = document.createElement('td');
+                    cell1.textContent = courseName;
+                    row.appendChild(cell1);
+
+                    const cell2 = document.createElement('td');
+                    cell2.textContent = studentName;
+                    row.appendChild(cell2);
+                    const cell3 = document.createElement('td');
+                    cell3.addEventListener("click", function () {
+                        const newGrade = prompt("Enter new grade:", this.textContent);
+                        if (newGrade !== null) {
+                            this.textContent = newGrade; // Update cell content
+                        }
+                        courses[courseName].students[studentName].grade = newGrade;
+                        sessionStorage.setItem('courseList', JSON.stringify(courses));
+                    });
+                    cell3.textContent = studentData.grade;
+                    row.appendChild(cell3);
+
+                    tableBody.appendChild(row);
+                }
+            } else if (courseData.instructorName === username) {
+                for (const [studentName, studentData] of Object.entries(courseData.students)) {
+                    const row = document.createElement('tr');
+
+                    const cell1 = document.createElement('td');
+                    cell1.textContent = courseName;
+                    row.appendChild(cell1);
+
+                    const cell2 = document.createElement('td');
+                    cell2.textContent = studentName;
+                    row.appendChild(cell2);
+                    const cell3 = document.createElement('td');
+                    cell3.addEventListener("click", function () {
+                        const newGrade = prompt("Enter new grade:", this.textContent);
+                        if (newGrade !== null) {
+                            this.textContent = newGrade; // Update cell content
+                        }
+                        courses[courseName].students[studentName].grade = newGrade;
+                        sessionStorage.setItem('courseList', JSON.stringify(courses));
+                    });
+                    cell3.textContent = studentData.grade;
+                    row.appendChild(cell3);
+
+                    tableBody.appendChild(row);
                 }
             }
-    
+        }
+
     }
+    //function showList(courseName, courseData) {
+    //    for (const [studentName, studentData] of Object.entries(courseData.students)) {
+    //        const row = document.createElement('tr');
 
-    
+    //        const cell1 = document.createElement('td');
+    //        cell1.textContent = courseName;
+    //        row.appendChild(cell1);
 
-    document.addEventListener('DOMContentLoaded',fillCourseTable);
-    </script>
+    //        const cell2 = document.createElement('td');
+    //        cell2.textContent = studentName;
+    //        row.appendChild(cell2);
+    //        const cell3 = document.createElement('td');
+    //        cell3.addEventListener("click", function () {
+    //            const newGrade = prompt("Enter new grade:", this.textContent);
+    //            if (newGrade !== null) {
+    //                this.textContent = newGrade; // Update cell content
+    //            }
+    //            courses[courseName].students[studentName].grade = newGrade;
+    //            sessionStorage.setItem('courseList', JSON.stringify(courses));
+    //        });
+    //        cell3.textContent = studentData.grade;
+    //        row.appendChild(cell3);
+
+    //        tableBody.appendChild(row);
+    //    }
+    //}
+    document.addEventListener('DOMContentLoaded', fillCourseTable);
+</script>
 <html>
