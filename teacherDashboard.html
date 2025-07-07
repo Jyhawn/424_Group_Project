@@ -48,9 +48,9 @@
                         row.appendChild(cell2);
                         const cell3 = document.createElement('td');
                         cell3.addEventListener("click", function () {
-                            const newData = prompt("Enter new data:", this.textContent);
-                            if (newData !== null) {
-                                this.textContent = newData; // Update cell content
+                            const newGrade = prompt("Enter new grade:", this.textContent);
+                            if (newGrade !== null) {
+                                this.textContent = newGrade; // Update cell content
                             }
                             courses[courseName].students[studentName].grade = newGrade;
                             sessionStorage.setItem('courseList', JSON.stringify(courses));
