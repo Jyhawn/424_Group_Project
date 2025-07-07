@@ -7,11 +7,14 @@
     </head>
     <body>
         <div class = "tableWrapper">
+        <div>
+            <button id="logout">logout</button>
+        </div>
           <table id="courseTable">
             <thead>
                 <tr>
                     <th>Course Name</th>
-                    <th>Username</th>
+                    <th>instructor</th>
                     <th>Role</th>
                     <th>Grade</th>
                 </tr>
@@ -29,6 +32,12 @@
         const accessList = JSON.parse(sessionStorage.getItem('accessList'));
 
         const courses = JSON.parse(sessionStorage.getItem('courseList'));
+
+        document.getElementById('logout').addEventListener('click',function(e){
+            sessionStorage.removeItem('username');
+            sessionStorage.removeItem('role');
+            window.location.href = "424main.html"
+        })
 
         //fills table from lists
         function fillCourseTable(){
