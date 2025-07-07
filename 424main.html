@@ -24,13 +24,16 @@
       const users = {
         "admin": {password: "admin",role:"admin"},
         "instructor": {password: "instructor",role:"instructor"},
-        "student": {password:"student",role:"student"}
+        "student": {password:"student",role:"student"},
+        "student2": {password:"student2",role:"student"}
       }
 
-      const accesslist = {
+      const accessList = {
         "admin": {
           "dashboard":["read","write","delete"],
-          "grades":["read","write","delete"]
+          "grades":["read","write","delete"],
+          "access":["read","write","delete"],
+          "studentsList":["read","write","delete"]
         },
         "instructor":{
           "dashboard":["read","write"],
@@ -42,6 +45,23 @@
         }
       }
 
+      const courses = {
+        "course":{
+            instructorName:"instructor",
+            students:{
+                "student":{grade:"A"},
+                "student2":{grade:"B"}
+            }
+        },
+        "course2":{
+            instructorName:"instructor",
+            students:{
+                "student":{grade:"A"},
+                "student2":{grade:"B"}
+            }
+        }
+    }
+
       document.getElementById('loginForm').addEventListener('submit',function(e){
         e.preventDefault();
 
@@ -52,7 +72,14 @@
           sessionStorage.setItem('username',username)
           sessionStorage.setItem('role',users[username].role)
 
-          window.location.href = "dashboard.html"
+          //using sessionStorage to pass lists as a sort of hacky solution
+          sessionStorage.setItem('accessList',JSON.stringify(accessList))
+          sessionStorage.setItem('courseList',JSON.stringify(courses))
+          if(users[username].role === "student")
+            window.location.href = "studentDashboard.html"
+          else{
+            window.location.href = "teacherDashboard.html"
+          }
         } else {
           alert("Wrong username/password")
         }
