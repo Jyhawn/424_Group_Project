@@ -30,6 +30,7 @@
         function fillCourseTable(){
             const tableBody = document.getElementById('courseTableBody')
             tableBody.innerHTML = '';
+            
             for (const [courseName,courseData] of Object.entries(courses)){
                 if (courseData.students && courseData.students[username]){
                     const row = document.createElement('tr');

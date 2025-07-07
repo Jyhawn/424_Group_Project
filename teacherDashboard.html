@@ -5,6 +5,9 @@
         <title></title>
     </head>
     <body>
+        <div>
+            <button id="logout">logout</button>
+        </div>
           <table id="courseTable">
             <thead>
                 <tr>
@@ -27,6 +30,7 @@
         function fillCourseTable(){
             const tableBody = document.getElementById('courseTableBody')
             tableBody.innerHTML = '';
+
             for (const [courseName,courseData] of Object.entries(courses)){
                 if (courseData.instructorName === username){
                     for(const [studentName,studentData] of Object.entries(courseData.students)){
@@ -49,8 +53,20 @@
                 }
             }
     
-
+            document.querySelectorAll("td:nth-child(3)").forEach(cell => {
+                    cell.addEventListener("click", function () {
+                    const newData = prompt("Enter new data:", this.textContent);
+                    if (newData !== null) {
+                        this.textContent = newData; // Update cell content
+                    }
+                    courses[courseName].students[studentName].grade = newGrade;
+                    sessionStorage.setItem('courseList', JSON.stringify(courses));
+                    });
+                });
     }
+
+    
+
     document.addEventListener('DOMContentLoaded',fillCourseTable);
     </script>
 <html>
