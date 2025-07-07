@@ -32,18 +32,14 @@
 
     const accessList = {
       "admin": {
-        "dashboard": ["read", "write", "delete"],
-        "grades": ["read", "write", "delete"],
-        "access": ["read", "write", "delete"],
-        "studentsList": ["read", "write", "delete"]
+        "teacherDashboard": ["read", "write", "delete"],
+        "studentsDashboard": ["read", "write", "delete"]
       },
       "instructor": {
-        "dashboard": ["read", "write"],
-        "grades": ["read", "write"]
+        "teacherDashboard": ["read", "write"]
       },
       "student": {
-        "dashboard": ["read"],
-        "grades": ["read"]
+        "studentDashboard": ["read"],
       }
     }
 
@@ -89,11 +85,16 @@
         //using sessionStorage to pass lists as a sort of hacky solution
         sessionStorage.setItem('accessList', JSON.stringify(accessList))
         sessionStorage.setItem('courseList', JSON.stringify(courses))
-        if (users[username].role === "student")
-          window.location.href = "studentDashboard.html"
-        else {
+        if(accessList[users[username].role]['teacherDashboard']?.includes('read')){
           window.location.href = "teacherDashboard.html"
+        } else if (accessList[users[username].role]['studentDashboard']?.includes('read')){
+          window.location.href = "studentDashboard.html"
         }
+        //if (users[username].role === "student")
+        //  window.location.href = "studentDashboard.html"
+        //else {
+        //  window.location.href = "teacherDashboard.html"
+        //}
       } else {
         alert("Wrong username/password")
       }
