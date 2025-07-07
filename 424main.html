@@ -1,89 +1,96 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <!-- <link rel = "stylesheet" href = "name.css"> use this to link to an external style sheet if we want-->
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    <div class="wrapper">
-      <form id="loginForm">
-        <h1>Login</h1>
-        <div class="input-box">
-          <input type="text" name="Username" required>
-        </div>
-        <div class="input-box">
-          <input type="password" name="Password" required>
-        </div>
-        <button type="submit" name="Button">Login</button>
-      </form>
-    </div>
-    <script type="text/javascript">
-      
-      //usernames and passwords, would move out to a csv file or database if time allows
-      const users = {
-        "admin": {password: "admin",role:"admin"},
-        "instructor": {password: "instructor",role:"instructor"},
-        "student": {password:"student",role:"student"},
-        "student2": {password:"student2",role:"student"}
-      }
 
-      const accessList = {
-        "admin": {
-          "dashboard":["read","write","delete"],
-          "grades":["read","write","delete"],
-          "access":["read","write","delete"],
-          "studentsList":["read","write","delete"]
-        },
-        "instructor":{
-          "dashboard":["read","write"],
-          "grades":["read","write"]
-        },
-        "student":{
-          "dashboard":["read"],
-          "grades":["read"]
-        }
-      }
+<head>
+  <!-- <link rel = "stylesheet" href = "name.css"> use this to link to an external style sheet if we want-->
+  <meta charset="utf-8">
+  <title></title>
+</head>
 
-      const courses = {
-        "course":{
-            instructorName:"instructor",
-            students:{
-                "student":{grade:"A"},
-                "student2":{grade:"B"}
-            }
-        },
-        "course2":{
-            instructorName:"instructor",
-            students:{
-                "student":{grade:"A"},
-                "student2":{grade:"B"}
-            }
-        }
+<body>
+  <div class="wrapper">
+    <form id="loginForm">
+      <h1>Login</h1>
+      <div class="input-box">
+        <input type="text" name="Username" required>
+      </div>
+      <div class="input-box">
+        <input type="password" name="Password" required>
+      </div>
+      <button type="submit" name="Button">Login</button>
+    </form>
+  </div>
+  <script type="text/javascript">
+
+    //usernames and passwords, would move out to a csv file or database if time allows
+    const users = {
+      "admin": { password: "admin", role: "admin" },
+      "instructor": { password: "instructor", role: "instructor" },
+      "student": { password: "student", role: "student" },
+      "student2": { password: "student2", role: "student" }
     }
 
-      document.getElementById('loginForm').addEventListener('submit',function(e){
-        e.preventDefault();
+    const accessList = {
+      "admin": {
+        "dashboard": ["read", "write", "delete"],
+        "grades": ["read", "write", "delete"],
+        "access": ["read", "write", "delete"],
+        "studentsList": ["read", "write", "delete"]
+      },
+      "instructor": {
+        "dashboard": ["read", "write"],
+        "grades": ["read", "write"]
+      },
+      "student": {
+        "dashboard": ["read"],
+        "grades": ["read"]
+      }
+    }
 
-        const username = this.elements.Username.value;
-        const password = this.elements.Password.value;
-
-        if(users[username] && users[username].password === password){
-          sessionStorage.setItem('username',username)
-          sessionStorage.setItem('role',users[username].role)
-
-          //using sessionStorage to pass lists as a sort of hacky solution
-          sessionStorage.setItem('accessList',JSON.stringify(accessList))
-          sessionStorage.setItem('courseList',JSON.stringify(courses))
-          if(users[username].role === "student")
-            window.location.href = "studentDashboard.html"
-          else{
-            window.location.href = "teacherDashboard.html"
+    let courses = {}
+    if (sessionStorage.getItem('courseList') !== null) {
+      courses = JSON.parse(sessionStorage.getItem('courseList'));
+    } else {
+      courses = {
+        "course": {
+          instructorName: "instructor",
+          students: {
+            "student": { grade: "A" },
+            "student2": { grade: "B" }
           }
-        } else {
-          alert("Wrong username/password")
+        },
+        "course2": {
+          instructorName: "instructor",
+          students: {
+            "student": { grade: "A" },
+            "student2": { grade: "B" }
+          }
         }
-      })
-    </script>
-  </body>
+      }
+    }
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const username = this.elements.Username.value;
+      const password = this.elements.Password.value;
+
+      if (users[username] && users[username].password === password) {
+        sessionStorage.setItem('username', username)
+        sessionStorage.setItem('role', users[username].role)
+
+        //using sessionStorage to pass lists as a sort of hacky solution
+        sessionStorage.setItem('accessList', JSON.stringify(accessList))
+        sessionStorage.setItem('courseList', JSON.stringify(courses))
+        if (users[username].role === "student")
+          window.location.href = "studentDashboard.html"
+        else {
+          window.location.href = "teacherDashboard.html"
+        }
+      } else {
+        alert("Wrong username/password")
+      }
+    })
+  </script>
+</body>
+
 </html>

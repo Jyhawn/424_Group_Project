@@ -28,7 +28,12 @@
         const accessList = JSON.parse(sessionStorage.getItem('accessList'));
 
         const courses = JSON.parse(sessionStorage.getItem('courseList'));
-
+        
+        document.getElementById('logout').addEventListener('click',function(e){
+            sessionStorage.removeItem('username');
+            sessionStorage.removeItem('role');
+            window.location.href = "424main.html"
+        })
         //fill table from lists
         function fillCourseTable(){
             const tableBody = document.getElementById('courseTableBody');
