@@ -24,7 +24,33 @@
         const accessList = JSON.parse(sessionStorage.getItem('accessList'))
 
         const courses = JSON.parse(sessionStorage.getItem('courseList'))
+        function fillCourseTable(){
+            const tableBody = document.getElementById('courseTableBody')
+            tableBody.innerHTML = '';
+            for (const [courseName,courseData] of Object.entries(courses)){
+                if (courseData.instructorName === username){
+                    for(const [studentName,studentData] of Object.entries(courseData.students)){
+                        const row = document.createElement('tr');
 
-        
+                        const cell1 = document.createElement('td');
+                        cell1.textContent = courseName;
+                        row.appendChild(cell1)
+
+                        const cell2 = document.createElement('td');
+                        cell2.textContent = studentName;
+                        row.appendChild(cell2)
+
+                        const cell3 = document.createElement('td');
+                        cell3.textContent = studentData.grade;
+                        row.appendChild(cell3)
+
+                        tableBody.appendChild(row)
+                    }
+                }
+            }
+    
+
+    }
+    document.addEventListener('DOMContentLoaded',fillCourseTable);
     </script>
 <html>
